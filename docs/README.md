@@ -1,5 +1,7 @@
 # ハッカソンリーグ2021 ルーキーリーグ Microsoft Azure でつくるお役立ち情報
 
+![image](https://i.gyazo.com/34a4a87d99d77194353b9bec81962428.png)
+
 ## このページは
 
 ハッカソンリーグ2021 ルーキーリーグ Microsoft Azure でつくるお役立ち情報をまとめているページです。
