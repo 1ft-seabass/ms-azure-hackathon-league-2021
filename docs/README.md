@@ -14,6 +14,8 @@
 
 ## リスト
 
+- Azure 基礎
+  - [Azure 基礎 (本リポジトリ内ドキュメント)](./azure-fundamentals.md)
 - お役立ちリンク集
   - [ハッカソンで使い勝手のよさそうな Microsoft のサービス紹介 \- Qiita](https://qiita.com/okazuki/items/b7a35278ecb1fd63a8c9)
   - [2020/9/17\_ハッカソンで Microsoft AI サービスを使って爆速開発](https://www.slideshare.net/chomado/2020917-microsoft-ai)
