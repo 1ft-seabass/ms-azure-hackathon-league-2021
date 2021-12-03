@@ -4,5 +4,5 @@
 
 | 案内 | 説明 |
 |----|----|
-| [GitHub Discussions](https://github.com/1ft-seabass/ms-azure-hackathon-league-2021/discussions) | GitHub Discussions を用いて、質疑応答や知見の共有を行うことができます。 |
+| [Discussions タブ](https://github.com/1ft-seabass/ms-azure-hackathon-league-2021/discussions) | GitHub Discussions を用いて、質疑応答や知見の共有を行うことができます。 |
 | [`docs`](./docs) | 技術メンターによるドキュメンテーションです。主に Azure を中心とした技術情報を公開しています。 |
