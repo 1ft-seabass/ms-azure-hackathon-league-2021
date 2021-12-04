@@ -165,3 +165,108 @@ module.exports = async function (context, req) {
 柴犬がメッセージに含まれていると柴犬画像が返答され。それ以外は、今まで通り、オウム返しします。
 
 ![image](https://i.gyazo.com/425bc378dc03814d66a88548e255b36c.jpg)
+
+## 柴犬のやり取りでちょっと待ってもらう
+
+API を読み込んでいるときに、先に「ちょっと待ってね」と言ってユーザーに待ってもらってから、API で取得後にメッセージを送るということがあると思います。
+
+そのときは、
+
+- 最初の処理
+    - 「ちょっと待ってね」と言ってユーザーに待ってもらう
+    - 送信方法
+        - 応答メッセージ（リプライメッセージ）
+            - 即答するやつ。ユーザーのアクションに応答するためのメッセージです。
+        - 参考 : メッセージを送信する \| LINE Developers](https://developers.line.biz/ja/docs/messaging-api/sending-messages/)
+- API 取得後に返答する処理
+    - 柴犬の画像
+        - プッシュメッセージ
+            - プッシュメッセージは、任意のタイミングでユーザーに送信できるメッセージです。
+        - 参考 : [メッセージを送信する \| LINE Developers](https://developers.line.biz/ja/docs/messaging-api/sending-messages/)
+
+のようにやります。
+
+### 今回の関数
+
+関数をこちらに書き換えましょう。また、アクセストークン `<YOUR_TOKEN>` とチャンネルシークレット `<YOUR_SECRET>` を、自分のお使いになる実際の LINE Bot の設定に書き換えましょう。
+
+```
+const line = require('@line/bot-sdk');
+const axios = require('axios');
+
+const config = {
+    channelAccessToken: '<YOUR_TOKEN>',
+    channelSecret:  '<YOUR_SECRET>',
+};
+
+const client = new line.Client(config);
+
+module.exports = async function (context, req) {
+    context.log('JavaScript HTTP trigger function processed a request.');
+    
+    if (req.query.message || (req.body && req.body.events)) {
+        if (req.body && req.body.events[0]) {
+            
+            if( req.body.events[0].message.text.indexOf('柴犬') != -1 ){  // 柴犬の文字が含まれているとき
+                // ちょっと待ってね
+                message = {
+                    type: "text",
+                    text: "ちょっと待ってね。柴犬画像とってきます！"
+                }
+                
+                if (req.body.events[0].replyToken) {
+                    client.replyMessage(req.body.events[0].replyToken, message);
+                }
+
+                // 柴犬 API にアクセス
+                const responseShibaAPI = await axios.get('http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true');
+                context.log(responseShibaAPI.data);
+                // ランダムで帰ってきた柴犬画像を取得
+                const imageURL = responseShibaAPI.data[0];
+                // 画像表示
+                const messageShibaMessage = {
+                    type: "image",
+                    originalContentUrl: imageURL,
+                    previewImageUrl: imageURL
+                }
+                // プッシュメッセージで時間差で送る
+                if (req.body.events[0].source.userId) {
+                    const pushUserId = req.body.events[0].source.userId;
+                    client.pushMessage(pushUserId, messageShibaMessage);
+                }
+
+            } else {
+                // オウム返し
+                message = {
+                    type: "text",
+                    text: req.body.events[0].message.text
+                }
+
+                if (req.body.events[0].replyToken) {
+                    client.replyMessage(req.body.events[0].replyToken, message);
+                }
+            }
+
+            console.log(message);
+
+            
+        }
+        else {
+            context.res = {
+                status: 200,
+                body: req.query.message
+            };
+        }
+    }
+    else {
+        context.res = {
+            status: 200,
+            body: "Please check the query string in the request body"
+        };
+    };
+};
+```
+
+実行してみると、APIを読み込む前に「ちょっと待ってね」とお願いしたあと API で取得した画像を返答しています。
+
+![image](https://i.gyazo.com/c3a4754a128ee3e017da70f7c6e082c2.jpg)
