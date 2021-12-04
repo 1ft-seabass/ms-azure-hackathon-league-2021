@@ -190,7 +190,7 @@ API を読み込んでいるときに、先に「ちょっと待ってね」と�
 
 関数をこちらに書き換えましょう。また、アクセストークン `<YOUR_TOKEN>` とチャンネルシークレット `<YOUR_SECRET>` を、自分のお使いになる実際の LINE Bot の設定に書き換えましょう。
 
-```
+```js
 const line = require('@line/bot-sdk');
 const axios = require('axios');
 
