@@ -1,8 +1,8 @@
-# Azure Functions と Line Bot
+# Azure Functions と LINE Bot
 
 ## 概要
 
-この ページは Azure Functions と Line Bot を連携してみたナレッジを残しています。
+この ページは Azure Functions と LINE Bot を連携してみたナレッジを残しています。
 
 ## その前に Azure Functions の使い方を知りたい方は
 
